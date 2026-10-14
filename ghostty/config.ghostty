@@ -1,0 +1,6 @@
+font-family = JetBrainsMono Nerd Font
+background = #3b4252
+font-size = 13
+theme = Nord
+
+keybind=ctrl+t=new_tab
