@@ -4,3 +4,4 @@ font-size = 13
 theme = Nord
 
 keybind=ctrl+t=new_tab
+keybind=ctrl+v=paste_from_clipboard
