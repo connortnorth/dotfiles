@@ -7,6 +7,7 @@ window-padding-x = 12
 window-padding-y = 12
 background-opacity = 0.99
 background-blur-radius = 32
+maximize = true
 
 # Cursor Configuration
 cursor-style = block
@@ -48,3 +49,4 @@ keybind = shift+enter=text:\n
 # Rando stuff
 gtk-single-instance = true
 theme = nordfox
+#theme = everforest-dark-hard
