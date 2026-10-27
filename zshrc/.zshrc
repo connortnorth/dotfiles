@@ -1,3 +1,4 @@
+fastfetch
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -76,6 +77,7 @@ alias l='exit'
 alias py='python'
 hash -d wps=/home/conman/connor-config/wallpapers
 alias rwp='wp r'
+alias ff='fastfetch'
 
 wp() {
     if [[ "$1" == "-r" || "$1" == "r" ]]; then
