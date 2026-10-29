@@ -78,64 +78,68 @@ alias py='python'
 hash -d wps=/home/conman/connor-config/wallpapers
 alias rwp='wp r'
 alias ff='fastfetch'
+alias ls='eza --group-directories-first --icons'
+alias lsa='eza --group-directories-first --icons -a'
+alias ll='eza -la --long --group --group-directories-first --icons --header --time-style "+%Y-%m-%d %I:%M %p"'
+alias lt='eza --group-directories-first --tree --icons'
 
 wp() {
-    if [[ "$1" == "-r" || "$1" == "r" ]]; then
+  if [[ "$1" == "-r" || "$1" == "r" ]]; then
 
-        local dir="${2:-$HOME/connor-config/wallpapers}"
+    local dir="${2:-$HOME/connor-config/wallpapers}"
 
-        if [[ ! -d "$dir" ]]; then
-            echo "Error: Directory '$dir' does not exist." >&2
-            return 1
-        fi
-
-        # Extract the currently active wallpaper path from Plasma's config file
-        local current_wp=""
-        if [[ -f "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" ]]; then
-            current_wp=$(grep -m 1 "^Image=" "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" | cut -d '=' -f 2- | sed 's|^file://||')
-        fi
-
-        # Find a random image, excluding hidden files and the current wallpaper
-        local random_img
-        random_img=$(find "$dir" -maxdepth 1 -type f -not -path '*/.*' -not -path "$current_wp" | shuf -n 1)
-
-        # Fallback: If only 1 wallpaper exists, find won't match anything when excluding current_wp.
-        # Pick any valid image in that case so the command doesn't fail.
-        if [[ -z "$random_img" ]]; then
-            random_img=$(find "$dir" -maxdepth 1 -type f -not -path '*/.*' | shuf -n 1)
-        fi
-
-        if [[ -n "$random_img" ]]; then
-            plasma-apply-wallpaperimage "$random_img"
-            chafa "$random_img"
-        else
-            echo "Error: No valid image files found in '$dir'." >&2
-            return 1
-        fi
-
-    elif [[ "$1" == "-s" || "$1" == "s" ]]; then
-
-        local dir="${2:-$HOME/connor-config/wallpapers}"
-
-        if [[ ! -d "$dir" ]]; then
-            echo "Error: Directory '$dir' does not exist." >&2
-            return 1
-        fi
-
-        # Use find to locate files and rofi in dmenu mode for interactive selection
-        local selected_img
-        selected_img=$(find "$dir" -maxdepth 1 -type f -not -path '*/.*' | rofi -dmenu -i -p "Select Wallpaper:")
-
-        if [[ -n "$selected_img" ]]; then
-            plasma-apply-wallpaperimage "$selected_img"
-            chafa "$selected_img"
-        fi
-
-    else
-        # Pass the provided argument directly to plasma-apply-wallpaperimage
-        plasma-apply-wallpaperimage "$1"
-        chafa "$1"
+    if [[ ! -d "$dir" ]]; then
+      echo "Error: Directory '$dir' does not exist." >&2
+      return 1
     fi
+
+    # Extract the currently active wallpaper path from Plasma's config file
+    local current_wp=""
+    if [[ -f "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" ]]; then
+      current_wp=$(grep -m 1 "^Image=" "$HOME/.config/plasma-org.kde.plasma.desktop-appletsrc" | cut -d '=' -f 2- | sed 's|^file://||')
+    fi
+
+    # Find a random image, excluding hidden files and the current wallpaper
+    local random_img
+    random_img=$(find "$dir" -maxdepth 1 -type f -not -path '*/.*' -not -path "$current_wp" | shuf -n 1)
+
+    # Fallback: If only 1 wallpaper exists, find won't match anything when excluding current_wp.
+    # Pick any valid image in that case so the command doesn't fail.
+    if [[ -z "$random_img" ]]; then
+      random_img=$(find "$dir" -maxdepth 1 -type f -not -path '*/.*' | shuf -n 1)
+    fi
+
+    if [[ -n "$random_img" ]]; then
+      plasma-apply-wallpaperimage "$random_img"
+      chafa "$random_img"
+    else
+      echo "Error: No valid image files found in '$dir'." >&2
+      return 1
+    fi
+
+  elif [[ "$1" == "-s" || "$1" == "s" ]]; then
+
+    local dir="${2:-$HOME/connor-config/wallpapers}"
+
+    if [[ ! -d "$dir" ]]; then
+      echo "Error: Directory '$dir' does not exist." >&2
+      return 1
+    fi
+
+    # Use find to locate files and rofi in dmenu mode for interactive selection
+    local selected_img
+    selected_img=$(find "$dir" -maxdepth 1 -type f -not -path '*/.*' | rofi -dmenu -i -p "Select Wallpaper:")
+
+    if [[ -n "$selected_img" ]]; then
+      plasma-apply-wallpaperimage "$selected_img"
+      chafa "$selected_img"
+    fi
+
+  else
+    # Pass the provided argument directly to plasma-apply-wallpaperimage
+    plasma-apply-wallpaperimage "$1"
+    chafa "$1"
+  fi
 }
 
 stownew() {
